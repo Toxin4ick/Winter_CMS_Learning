@@ -3,6 +3,8 @@
 use Cms\Classes\ComponentBase;
 use Input;
 use Mail;
+use Validator;
+use Redirect;
 
 class ContactForm extends ComponentBase
 {
@@ -15,12 +17,31 @@ class ContactForm extends ComponentBase
     }
 
     public function onSend(){
-        $vars = ['name'=>'Joe', 'email' => Input::get('email'), 'content'=> Input::get('content')];
 
-        Mail::send('watchlearn.contact::mail.message', $vars, function($message){
-            $message->to('admin@domain.tld','Admin Person');
-            $message->subject('New message from contact form');
-        });
+
+        $validator=Validator::make(
+            [
+                'name'=>Input::get('name'),
+                'email' => Input::get('email')
+            ],
+            [
+                'name'=>'required|min:5',
+                'email'=>'required|email'
+            ]
+        );
+
+
+        if($validator->fails()){
+
+             return Redirect::back()->withErrors($validator);
+        }else {
+            $vars = ['name' => Input::get('name'), 'email' => Input::get('email'), 'content' => Input::get('content')];
+
+            Mail::send('watchlearn.contact::mail.message', $vars, function ($message) {
+                $message->to('admin@domain.tld', 'Admin Person');
+                $message->subject('New message from contact form');
+            });
+        }
     }
 
 
