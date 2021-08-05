@@ -6,6 +6,9 @@ class Plugin extends PluginBase
 {
     public function registerComponents()
     {
+        return [
+            'Watchlearn\Movies\Components\Actors'=>'actors'
+        ];
     }
 
 
@@ -15,7 +18,7 @@ class Plugin extends PluginBase
             'Watchlearn\Movies\FormWidgets\Actorbox' => [
                 'label' => 'Actorbox field',
                 'code'  => 'actorbox'
-            ]    
+            ]
         ];
     }
 
