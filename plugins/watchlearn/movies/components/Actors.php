@@ -13,12 +13,56 @@ class Actors extends ComponentBase
         ];
     }
 
+    public function defineProperties()
+    {
+        return[
+            'results'=>[
+                'title'=>'Number of Actors',
+                'desription'=>'Now many actors do you want to display',
+                'default'=>0,
+                'validationPatter'=>'^[0-9]+$',
+                'validationMessage'=>'Only numbers allowed'
+            ],
+
+            'sortOrder' => [
+                'title' => 'Sort Actors',
+                'description' => 'Sort those actors',
+                'type' => 'dropdown',
+                'default' => 'name asc'
+            ]
+
+        ];
+    }
+
+    public function getSortOrderOptions(){
+        return[
+            'name asc'=>'Name (ascending)',
+            'name desc'=>'Name (descending)'
+        ];
+    }
+
     public function onRun(){
         $this->actors = $this->loadActors();
     }
 
     protected function loadActors(){
-        return Actor::all();
+        $query = Actor::all();
+        if($this->property('sortOrder')=='name asc')
+        {
+            $query=$query->sortBy('name');
+        }
+
+        if($this->property('sortOrder')=='name desc')
+        {
+            $query=$query->sortByDesc('name');
+        }
+
+        if($this->property('results')>0){
+            $query=$query->take($this->property('results'));
+        }
+
+
+        return $query;
     }
 
     public $actors;
