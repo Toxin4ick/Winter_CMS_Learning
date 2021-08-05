@@ -224,7 +224,7 @@ return [
     |
     */
 
-    'enableAssetDeepHashing' => null,
+    'enableAssetDeepHashing' => true,
 
     /*
     |--------------------------------------------------------------------------
