@@ -4,7 +4,10 @@ layout = "default"
 is_hidden = 0
 
 [actorform]
+
+[session]
+security = "user"
+redirect = "login"
 ==
 <h2>Add on Actor</h2>
-
-{% component 'actorform' %}
+{% component 'actorform' %}{% component 'session' %}
