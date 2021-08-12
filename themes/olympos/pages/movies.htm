@@ -6,12 +6,13 @@ is_hidden = 0
 [builderList]
 modelClass = "Watchlearn\Movies\Models\Movie"
 scope = "-"
+scopeValue = "{{ :scope }}"
 displayColumn = "name"
 noRecordsMessage = "No records found"
 detailsPage = "movie-single"
 detailsKeyColumn = "slug"
 detailsUrlParameter = "slug"
-recordsPerPage = 10
+recordsPerPage = 20
 pageNumber = "{{ :page }}"
 ==
 {% set records = builderList.records %}
