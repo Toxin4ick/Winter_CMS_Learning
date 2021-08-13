@@ -9,10 +9,59 @@ sortOrder = "name asc"
 
 [siteSearchInclude]
 ==
+<?
+    use WatchLearn\Movies\Models\Movie;
+    function onStart(){
+        $this['movies'] = Movie::take(4)->get();
+    }
+
+
+?>
+==
 <form action="{{ 'search' | page }}" method="get">
     <input name="q" type="text" placeholder="What are you looking for?" autocomplete="off">
     <button type="submit">Search</button>
 </form>
+
+{% if movie %}
+    <h2>{{ movie.name}}</h2>
+    <img src="{{ movie.poster.thumb(200,auto) }}">
+
+
+
+    <h4>{{ movie.year }}</h4>
+
+    <h3>Description</h3>
+
+    {{ movie.description|raw }}
+
+    <h3>Actors</h3>
+
+    {% for actor in movie.actors %}
+        {{ actor.name }}
+        {{ actor.lastname }}
+    {% endfor %}
+    <h3>Gallery</h3>
+
+    <ul class="gallery clearfix">
+    {% for image in movie.movie_gallery %}
+        <li>
+            <a href="{{ image.path}}">
+                <img src="{{ image.thumb(80,80, {'mode':'crop'}) }}">
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h3>Genres</h3>
+
+    {% for genre in movie.genres %}
+        <a href="/genres/{{ genre.slug }}">{{ genre.genre_title }}</a><br>
+    {% endfor %}
+
+{% else %}
+    {{ notFoundMessage }}
+{% endif %}
 
 <h2>This is our homepage! Yay!</h2>
 
